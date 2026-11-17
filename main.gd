@@ -65,7 +65,10 @@ var dialogue_buttons: HBoxContainer
 func _ready() -> void:
 	_build_world()
 	_build_guild()
-	_build_player()
+	_build_player()body_mesh = Node3D.new()
+body_mesh.set_script(load("res://character_visual.gd"))
+body_mesh.set("coat_color", Color(0.12, 0.25, 0.65))
+player.add_child(body_mesh)
 	_spawn_slimes()
 	_build_hud()
 	_load()
