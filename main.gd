@@ -78,27 +78,87 @@ func _notification(what: int) -> void:
 
 # =====================  MONDE  =====================
 
+
 func _build_world() -> void:
-	var sun := DirectionalLight3D.new()
-	sun.rotation_degrees = Vector3(-50, -30, 0)
-	add_child(sun)
+    var sun := DirectionalLight3D.new()
+    sun.rotation_degrees = Vector3(-50, -30, 0)
+    add_child(sun)
 
-	var world_env := WorldEnvironment.new()
-	var env := Environment.new()
-	env.background_mode = Environment.BG_COLOR
-	env.background_color = Color(0.55, 0.78, 1.0)
-	env.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
-	env.ambient_light_color = Color(0.8, 0.8, 0.9)
-	env.ambient_light_energy = 0.6
-	world_env.environment = env
-	add_child(world_env)
+    var world_env := WorldEnvironment.new()
+    var env := Environment.new()
+    env.background_mode = Environment.BG_COLOR
+    env.background_color = Color(0.55, 0.78, 1.0)
+    env.ambient_light_source = Environment.AMBIENT_SOURCE_COLOR
+    env.ambient_light_color = Color(0.8, 0.8, 0.9)
+    env.ambient_light_energy = 0.7
+    world_env.environment = env
+    add_child(world_env)
 
-	_add_box(Vector3(0, -0.5, 0), Vector3(100, 1, 100), Color(0.3, 0.65, 0.3))
+    # GRAND SOL
+    _add_box(Vector3(0, -0.5, 0), Vector3(100, 1, 100), Color(0.3, 0.65, 0.3))
 
-	# Maisons decoratives
-	for h in [Vector3(-24, 0, 0), Vector3(24, 0, -6), Vector3(-22, 0, -22)]:
-		_add_box(h + Vector3(0, 2, 0), Vector3(8, 4, 6), Color(0.85, 0.75, 0.6))
-		_add_box(h + Vector3(0, 4.5, 0), Vector3(9, 1, 7), Color(0.6, 0.2, 0.2))
+    # ROUTE PRINCIPALE
+    _add_box(Vector3(0, 0.02, 6), Vector3(7, 0.08, 42), Color(0.35, 0.32, 0.29))
+
+    # PLACE DEVANT LA GUILDE
+    _add_box(Vector3(0, 0.04, -5), Vector3(18, 0.1, 7), Color(0.65, 0.58, 0.46))
+
+    # MAISONS ET BOUTIQUES
+    var positions = [
+        Vector3(-14, 0, 8),
+        Vector3(14, 0, 8),
+        Vector3(-15, 0, -8),
+        Vector3(15, 0, -8),
+        Vector3(-25, 0, 3),
+        Vector3(25, 0, 3)
+    ]
+
+    for i in range(positions.size()):
+        var p: Vector3 = positions[i]
+
+        _add_box(p + Vector3(0, 2, 0),
+            Vector3(7, 4, 6), Color(0.85, 0.72, 0.55))
+
+        _add_box(p + Vector3(0, 4.3, 0),
+            Vector3(8, 1, 7), Color(0.55, 0.18, 0.16))
+
+        _add_box(p + Vector3(0, 1, 3.05),
+            Vector3(1.5, 2, 0.15), Color(0.3, 0.16, 0.08))
+
+    # ARBRES
+    var tree_positions = [
+        Vector3(-9, 0, 14),
+        Vector3(9, 0, 14),
+        Vector3(-9, 0, 3),
+        Vector3(9, 0, 3),
+        Vector3(-9, 0, -5),
+        Vector3(9, 0, -5),
+        Vector3(-23, 0, -12),
+        Vector3(23, 0, -12)
+    ]
+
+    for p in tree_positions:
+        _add_box(p + Vector3(0, 1, 0),
+            Vector3(0.6, 2, 0.6), Color(0.35, 0.2, 0.1))
+
+        var leaves := MeshInstance3D.new()
+        var sphere := SphereMesh.new()
+        sphere.radius = 1.7
+        sphere.height = 3.4
+        leaves.mesh = sphere
+        leaves.position = p + Vector3(0, 3, 0)
+        leaves.material_override = _mat(Color(0.12, 0.48, 0.16))
+        add_child(leaves)
+
+    # LAMPADAIRES
+    for z in [12, 2, -4]:
+        for x in [-4, 4]:
+            _add_box(Vector3(x, 1.5, z),
+                Vector3(0.18, 3, 0.18), Color(0.15, 0.12, 0.1))
+
+            _add_box(Vector3(x, 3.1, z),
+                Vector3(0.8, 0.6, 0.8), Color(1, 0.8, 0.35))
+
 
 
 func _build_guild() -> void:
